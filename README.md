@@ -1,40 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+Aplicație Web pentru Gestionarea Rețetelor Culinare
 
-## Getting Started
+1. Introducere
+Această aplicație web este dezvoltată pentru gestionarea eficientă a rețetelor culinare personale. Aplicația permite utilizatorilor să creeze, vizualizeze, editeze și să șteargă rețete într-un mod intuitiv și elegant. Proiectul este construit folosind tehnologii moderne web și integrează servicii cloud pentru o experiență completă.
 
-First, run the development server:
+3. Descrierea Problemei
+În era digitală actuală, mulți pasionați de gătit se confruntă cu provocarea organizării rețetelor lor favorite. Problema principală identificată este lipsa unei soluții centralizate, ușor de folosit, pentru:
+•	Organizarea rețetelor personale - Utilizatorii au nevoie de un loc centralizat unde să-și păstreze toate rețetele
+•	Accesibilitatea informațiilor - Necesitatea accesului rapid la ingrediente și instrucțiuni de preparare
+•	Gestionarea eficientă - Posibilitatea de a edita, actualiza sau șterge rețete învechite
+•	Interfață intuitivă - O experiență utilizator plăcută și modernă pentru navigarea prin colecție
+Aplicația dezvoltată rezolvă aceste probleme prin oferirea unei platforme web complete, care permite gestionarea facilă a rețetelor culinare într-un mediu digital modern și accesibil.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+5. Descrierea API
+Aplicația utilizează o arhitectură RESTful cu API-ul propriu dezvoltat în Next.js, care integrează două servicii cloud principale:
+Servicii Cloud Utilizate:
+1.	MongoDB Atlas (Serviciu de bază de date cloud)
+o	Stocare persistentă a rețetelor
+o	Operațiuni CRUD complete
+o	Scalabilitate automată
+2.	Vercel (Serviciu de hosting și deployment)
+o	Hosting aplicației web
+o	Deployment automat din Git
+o	CDN global pentru performanță optimă
+Structura API-ului:
+Endpoint principal: /api/recipes
+Operațiuni suportate:
+•	GET - Obținerea rețetelor
+•	POST - Crearea de rețete noi
+•	PUT - Actualizarea rețetelor existente
+•	DELETE - Ștergerea rețetelor
+4. Fluxul de Date
+Metode HTTP și Funcționalități:
+GET /api/recipes
+Descriere: Obține lista tuturor rețetelor sau o rețetă specifică
+Exemple de Request:
+# Obține toate rețetele
+GET /api/recipes
+Accept: application/json
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Obține o rețetă specifică
+GET /api/recipes?id=64f5e8a9d4c2b1a8e9f3d2c1
+Accept: application/json
+Exemple de Response:
+// Lista de rețete
+[
+  {
+    "_id": "64f5e8a9d4c2b1a8e9f3d2c1",
+    "title": "Papanași cu smântână",
+    "description": "Desert tradițional românesc...",
+    "ingredients": ["făină", "ouă", "lapte", "zahăr"],
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  }
+]
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+// Rețetă individuală
+{
+  "_id": "64f5e8a9d4c2b1a8e9f3d2c1",
+  "title": "Papanași cu smântână",
+  "description": "Amestecați făina cu ouăle...",
+  "ingredients": ["făină", "ouă", "lapte", "zahăr"],
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z"
+}
+POST /api/recipes
+Descriere: Creează o rețetă nouă
+Exemplu de Request:
+POST /api/recipes
+Content-Type: application/json
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+{
+  "title": "Ciorbă de burtă",
+  "description": "Se pune burta la fiert cu...",
+  "ingredients": ["burtă de vită", "ceapă", "morcov", "smântână"]
+}
+Exemplu de Response:
+{
+  "message": "Rețeta a fost creată cu succes",
+  "recipeId": "64f5e8a9d4c2b1a8e9f3d2c2"
+}
+PUT /api/recipes?id={recipeId}
+Descriere: Actualizează o rețetă existentă
+Exemplu de Request:
+PUT /api/recipes?id=64f5e8a9d4c2b1a8e9f3d2c1
+Content-Type: application/json
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+{
+  "title": "Papanași cu smântână și dulceață",
+  "description": "Descriere actualizată...",
+  "ingredients": ["făină", "ouă", "lapte", "zahăr", "dulceață"]
+}
+Exemplu de Response:
+{
+  "message": "Rețeta a fost actualizată"
+}
+DELETE /api/recipes?id={recipeId}
+Descriere: Șterge o rețetă
+Exemplu de Request:
+DELETE /api/recipes?id=64f5e8a9d4c2b1a8e9f3d2c1
+Exemplu de Response:
+{
+  "message": "Rețeta a fost ștearsă"
+}
+Autentificare și Autorizare
+În versiunea actuală, aplicația nu implementează autentificare, fiind concepută pentru uz personal. Totuși, serviciile cloud utilizate sunt securizate:
+•	MongoDB Atlas: Conexiune securizată prin string de conexiune cu credențiale
+•	Vercel: Deployment securizat prin integrarea Git și variabile de mediu
+Fluxul Complet de Date:
+1.	Utilizatorul interactionează cu interfața web (React/Next.js)
+2.	Frontend-ul trimite cereri către API-ul local (/api/recipes)
+3.	API-ul procesează cererea și se conectează la MongoDB Atlas
+4.	Baza de date returnează rezultatul către API
+5.	API-ul formateaza răspunsul și îl trimite către frontend
+6.	Frontend-ul actualizează interfața cu noile date
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Concluzie
+Aplicația dezvoltată oferă o soluție completă și modernă pentru gestionarea rețetelor culinare, integrând servicii cloud pentru o experiență robustă și scalabilă. Prin utilizarea tehnologiilor moderne și a unei arhitecturi RESTful, aplicația asigură o experiență utilizator excelentă și o performanță optimă.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
